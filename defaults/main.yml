@@ -1,0 +1,10 @@
+---
+
+wildfly_version: 10.1.0.Final
+
+wildfly_modules:
+  - name: com.mysql
+    dependencies: []
+#  - postgres
+
+wildfly_module_mysql_version: 5.1.44

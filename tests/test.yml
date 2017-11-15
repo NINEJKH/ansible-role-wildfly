@@ -1,0 +1,17 @@
+---
+
+- hosts: all
+
+  vars:
+
+    wildfly_modules:
+      - name: com.mysql
+        dependencies:
+          - name: "javax.api"
+            services: "n/a"
+
+          - name: "javax.transaction.api"
+            services: "n/a"
+
+  roles:
+    - { role: "{{ role_root | default('../ansible-role-wildfly') }}" }

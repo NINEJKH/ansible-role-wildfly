@@ -1,0 +1,73 @@
+---
+
+- name: fetch WildFly
+  unarchive:
+    src: "{{ wildfly_download_url }}"
+    dest: /opt
+    remote_src: yes
+    creates: /opt/wildfly-{{ wildfly_version }}
+  become: yes
+
+- name: create wildfly group
+  group:
+    name: wildfly
+  become: yes
+
+- name: create wildfly user
+  user:
+    name: wildfly
+    group: wildfly
+    home: /var/lib/wildfly
+    shell: /bin/bash
+  become: yes
+
+- name: create folders
+  file:
+    state: directory
+    path: "{{ item }}"
+    mode: 0755
+    owner: wildfly
+    group: wildfly
+  with_items:
+    - /etc/wildfly
+    - /var/log/wildfly
+    - /var/lib/wildfly/deployments
+  become: yes
+
+- name: upsert /etc/default/wildfly
+  template:
+    src: standalone.conf
+    dest: /etc/default/wildfly
+    mode: 0644
+  become: yes
+
+- name: upsert /etc/wildfly/standalone.xml
+  template:
+    src: standalone.xml
+    dest: /etc/wildfly/standalone.xml
+    mode: 0644
+  become: yes
+
+- name: copy over other files from the installation
+  copy:
+    src: /opt/wildfly-{{ wildfly_version }}/standalone/configuration/{{ item.name }}
+    dest: /etc/wildfly/{{ item.name }}
+    remote_src: yes
+    mode: "{{ item.mode }}"
+    owner: wildfly
+    group: wildfly
+  with_items:
+    - { name: application-roles.properties, mode: '0644' }
+    - { name: application-users.properties, mode: '0600' }
+    - { name: logging.properties, mode: '0644' }
+    - { name: mgmt-groups.properties, mode: '0644' }
+    - { name: mgmt-users.properties, mode: '0600' }
+  become: yes
+
+# logrotate
+# https://bgasparotto.com/start-stop-restart-wildfly/
+# https://www.packtpub.com/mapt/book/networking_and_servers/9781784392413/2/ch02lvl1sec28/reloading-a-server-configuration-via-the-cli
+
+# compare standalone.xml
+
+# install module

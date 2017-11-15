@@ -1,0 +1,20 @@
+---
+
+- import_tasks: install.yml
+
+- include_tasks: modules/{{ wildfly_module.name }}.yml
+  with_items: "{{ wildfly_modules }}"
+  loop_control:
+    loop_var: wildfly_module
+  when: wildfly_modules | length > 0
+
+- name: check if systemd is installed
+  command: systemctl --version
+  register: systemctl_version
+  ignore_errors: yes
+
+- include_tasks: service-init.yml
+  when: systemctl_version.rc != 0
+
+- include_tasks: service-systemd.yml
+  when: systemctl_version.rc == 0

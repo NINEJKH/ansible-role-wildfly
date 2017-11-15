@@ -1,0 +1,9 @@
+---
+
+- name: add sysvinit service
+  template:
+    src: init.sh
+    dest: /etc/init.d/wildfly
+    mode: "a+x"
+  become: yes
+  notify: restart_wildfly

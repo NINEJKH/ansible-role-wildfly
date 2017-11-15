@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- {{ ansible_managed }} -->
+
+<module xmlns="urn:jboss:module:1.1" name="{{ wildfly_module.name }}">
+    <resources>
+        <resource-root path="mysql-connector-java-{{ wildfly_module_mysql_version }}-bin.jar"/>
+    </resources>
+
+    <dependencies>
+{% for dependency in wildfly_module.dependencies %}
+{% if dependency.services == "n/a" %}
+        <module name="{{ dependency.name }} "/>
+{% else %} 
+        <!-- Ansible encountered an unexpected dependency.services value of {{ dependency.services }} -->
+{% endif %}
+{% endfor %}
+    </dependencies>
+</module>
