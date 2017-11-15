@@ -83,11 +83,11 @@ if [ $? -ne 0 -o -z "$JBOSS_USER" ]; then
 	exit 1
 fi
 
-# Check owner of JBOSS_HOME
-if [ ! $(stat -L -c "%U" "$JBOSS_HOME") = $JBOSS_USER ]; then
-	log_failure_msg "The user \"$JBOSS_USER\" is not owner of \"$JBOSS_HOME\""
-	exit 1
-fi
+# Check owner of JBOSS_HOME (gunterg: why is this needed??)
+#if [ ! $(stat -L -c "%U" "$JBOSS_HOME") = $JBOSS_USER ]; then
+#	log_failure_msg "The user \"$JBOSS_USER\" is not owner of \"$JBOSS_HOME\""
+#	exit 1
+#fi
 
 # Startup mode of wildfly
 if [ -z "$JBOSS_MODE" ]; then
