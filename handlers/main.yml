@@ -1,0 +1,12 @@
+---
+
+- name: reload_systemd
+  command: systemctl daemon-reload
+  become: yes
+
+- name: restart_wildfly
+  service:
+    name: wildfly
+    state: restarted
+    enabled: yes
+  become: yes

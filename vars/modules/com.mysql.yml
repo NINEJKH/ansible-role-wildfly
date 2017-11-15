@@ -1,0 +1,5 @@
+---
+
+wildfly_module_mysql_download_url: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-{{ wildfly_module_mysql_version }}.zip
+
+wildfly_module_mysql_folder: "/opt/wildfly-{{ wildfly_version }}/modules/com/mysql/main"

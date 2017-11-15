@@ -1,0 +1,42 @@
+---
+
+- include_vars: modules/{{ wildfly_module.name }}.yml
+
+- name: fetch module
+  unarchive:
+    src: "{{ wildfly_module_mysql_download_url }}"
+    dest: /tmp
+    remote_src: yes
+    creates: "{{ wildfly_module_mysql_folder }}/mysql-connector-java-{{ wildfly_module_mysql_version }}-bin.jar"
+  register: fetched_module
+
+- name: create target folder
+  file:
+    state: directory
+    path: "{{ wildfly_module_mysql_folder }}"
+    mode: 0755
+  become: yes
+
+- name: copy over resources
+  copy:
+    src: /tmp/mysql-connector-java-{{ wildfly_module_mysql_version }}/mysql-connector-java-{{ wildfly_module_mysql_version }}-bin.jar
+    dest: "{{ wildfly_module_mysql_folder }}/mysql-connector-java-{{ wildfly_module_mysql_version }}-bin.jar"
+    mode: 0644
+    remote_src: yes
+  become: yes
+  when: not fetched_module | skipped
+  notify: restart_wildfly
+
+- name: cleanup
+  file:
+    state: absent
+    path: /tmp/mysql-connector-java-{{ wildfly_module_mysql_version }}
+  become: yes
+
+- name: apply module.xml
+  template:
+    src: modules/{{ wildfly_module.name }}.xml
+    dest: "{{ wildfly_module_mysql_folder }}/module.xml"
+    mode: 0644
+  become: yes
+  notify: restart_wildfly

@@ -1,0 +1,11 @@
+---
+
+- name: add systemd service
+  template:
+    src: wildfly.service.ini
+    dest: /lib/systemd/system/wildfly.service
+    mode: 0644
+  become: yes
+#  notify:
+#    - reload_systemd
+#    - restart_wildfly
