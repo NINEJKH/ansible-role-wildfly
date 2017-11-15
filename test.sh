@@ -79,6 +79,7 @@ curl \
   --silent \
   --fail \
   --show-error \
+  --retry-connrefused \
   --retry 60 \
   --retry-delay 5 \
   "${TARGET_HOST}:8080" > /dev/null
