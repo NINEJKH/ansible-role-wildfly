@@ -1,0 +1,22 @@
+---
+
+- name: symlink cli tools
+  file:
+    src: /opt/wildfly-{{ wildfly_version }}/bin/{{ item }}
+    dest: /usr/local/bin/{{ item }}
+    state: link
+    force: yes
+  with_items:
+    - add-user.sh
+    - appclient.sh
+    - jboss-cli.sh
+    - jconsole.sh
+  become: yes
+
+- name: add environment variables to shell users
+  copy:
+    content: |
+      export JBOSS_HOME=/opt/wildfly-{{ wildfly_version }}
+    dest: /etc/profile.d/wildfly.sh
+    mode: 0644
+  become: yes

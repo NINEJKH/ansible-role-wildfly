@@ -1,0 +1,5 @@
+---
+
+wildfly_module_postgresql_download_url: https://jdbc.postgresql.org/download/postgresql-{{ wildfly_module_postgresql_version }}.jar
+
+wildfly_module_postgresql_folder: "/opt/wildfly-{{ wildfly_version }}/modules/org/postgresql/main"

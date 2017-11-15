@@ -1,0 +1,28 @@
+---
+
+- include_vars: modules/{{ wildfly_module.name }}.yml
+
+- name: create target folder
+  file:
+    state: directory
+    path: "{{ wildfly_module_postgresql_folder }}"
+    mode: 0755
+  become: yes
+
+- name: fetch module
+  get_url:
+    url: "{{ wildfly_module_postgresql_download_url }}"
+    dest: "{{ wildfly_module_postgresql_folder }}/postgresql-{{ wildfly_module_postgresql_version }}.jar"
+    checksum: sha256:4523ed32e9245e762e1df9f0942a147bece06561770a9195db093d9802297735
+    validate_certs: no
+    mode: 0644
+  become: yes
+  notify: restart_wildfly
+
+- name: apply module.xml
+  template:
+    src: modules/{{ wildfly_module.name }}.xml
+    dest: "{{ wildfly_module_postgresql_folder }}/module.xml"
+    mode: 0644
+  become: yes
+  notify: restart_wildfly

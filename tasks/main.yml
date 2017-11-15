@@ -2,6 +2,8 @@
 
 - import_tasks: install.yml
 
+- import_tasks: cli.yml
+
 - include_tasks: modules/{{ wildfly_module.name }}.yml
   with_items: "{{ wildfly_modules }}"
   loop_control:

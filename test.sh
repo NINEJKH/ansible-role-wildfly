@@ -68,4 +68,10 @@ ansible-playbook \
   --extra-vars="role_root=${role_root}" \
   tests/test.yml
 
-curl -sSf "${TARGET_HOST}:8080"
+curl \
+  --silent \
+  --fail \
+  --show-error \
+  --retry 60 \
+  --retry-delay 5 \
+  "${TARGET_HOST}:8080" > /dev/null
