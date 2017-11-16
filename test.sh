@@ -75,11 +75,16 @@ ansible-playbook \
   --connection="${CONNECTION}" \
   tests/test.yml
 
-curl \
-  --silent \
-  --fail \
-  --show-error \
-  --retry-connrefused \
-  --retry 60 \
-  --retry-delay 5 \
-  "${TARGET_HOST}:8080" > /dev/null
+# waitfor 5min
+while [[ "${i}" -lt "60" ]]; do
+  i="$((i + 1))"
+  if ! curl \
+    --silent \
+    --fail \
+    --show-error \
+    "${TARGET_HOST}:8080" > /dev/null; then
+    sleep 5
+  else
+    break
+  fi
+done
