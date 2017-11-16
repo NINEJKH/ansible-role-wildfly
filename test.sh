@@ -43,10 +43,15 @@ shift "$((OPTIND-1))"
 
 if [[ -z "${TARGET_HOST}" ]]; then
   TARGET_HOST="127.0.0.1"
+  CONNECTION="local"
 fi
 
 if [[ -z "${CONNECT_USER}" ]]; then
   CONNECT_USER="$(whoami)"
+fi
+
+if [[ -z "${CONNECTION}" ]]; then
+  CONNECTION="smart"
 fi
 
 role_root="$(pwd)"
@@ -59,6 +64,7 @@ ansible-playbook \
   --inventory="${TARGET_HOST}," \
   --user="${CONNECT_USER}" \
   --extra-vars="role_root=${role_root}" \
+  --connection="${CONNECTION}" \
   tests/test.yml
 
 consolelog "running role as playbook #2"
@@ -66,6 +72,27 @@ ansible-playbook \
   --inventory="${TARGET_HOST}," \
   --user="${CONNECT_USER}" \
   --extra-vars="role_root=${role_root}" \
+  --connection="${CONNECTION}" \
   tests/test.yml
 
-curl -sSf "${TARGET_HOST}:8080"
+# waitfor 5min
+while [[ "${i}" -lt "60" ]]; do
+  i="$((i + 1))"
+  if ! curl \
+    --head \
+    --silent \
+    --fail \
+    --show-error \
+    "${TARGET_HOST}:8080" 2> /dev/null; then
+    consolelog "waitfor ${TARGET_HOST}:8080 #${i}"
+    sleep 5
+  else
+    success="1"
+    break
+  fi
+done
+
+if [[ -z "${success}" ]]; then
+  consolelog "wildfly unreachable" "error"
+  exit 1
+fi

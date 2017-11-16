@@ -5,6 +5,9 @@ wildfly_version: 10.1.0.Final
 wildfly_modules:
   - name: com.mysql
     dependencies: []
-#  - postgres
+  - name: org.postgresql
+    dependencies: []
 
 wildfly_module_mysql_version: 5.1.44
+
+wildfly_module_postgresql_version: 42.1.4

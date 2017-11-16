@@ -1,8 +1,16 @@
 ---
 
+- name: apply default.conf
+  template:
+    src: default.conf
+    dest: /etc/default/wildfly
+    mode: 0644
+  become: yes
+  notify: restart_wildfly
+
 - name: add sysvinit service
   template:
-    src: init.sh
+    src: wildfly.init.sh
     dest: /etc/init.d/wildfly
     mode: "a+x"
   become: yes

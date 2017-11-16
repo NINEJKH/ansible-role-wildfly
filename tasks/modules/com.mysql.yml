@@ -2,6 +2,13 @@
 
 - include_vars: modules/{{ wildfly_module.name }}.yml
 
+- name: create target folder
+  file:
+    state: directory
+    path: "{{ wildfly_module_mysql_folder }}"
+    mode: 0755
+  become: yes
+
 - name: fetch module
   unarchive:
     src: "{{ wildfly_module_mysql_download_url }}"
@@ -9,13 +16,6 @@
     remote_src: yes
     creates: "{{ wildfly_module_mysql_folder }}/mysql-connector-java-{{ wildfly_module_mysql_version }}-bin.jar"
   register: fetched_module
-
-- name: create target folder
-  file:
-    state: directory
-    path: "{{ wildfly_module_mysql_folder }}"
-    mode: 0755
-  become: yes
 
 - name: copy over resources
   copy:

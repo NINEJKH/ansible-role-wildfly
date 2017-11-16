@@ -1,6 +1,10 @@
 ---
 
+- import_tasks: dependencies.yml
+
 - import_tasks: install.yml
+
+- import_tasks: cli.yml
 
 - include_tasks: modules/{{ wildfly_module.name }}.yml
   with_items: "{{ wildfly_modules }}"
@@ -13,7 +17,7 @@
   register: systemctl_version
   ignore_errors: yes
 
-- include_tasks: service-init.yml
+- include_tasks: service-initv.yml
   when: systemctl_version.rc != 0
 
 - include_tasks: service-systemd.yml

@@ -6,6 +6,6 @@
     dest: /lib/systemd/system/wildfly.service
     mode: 0644
   become: yes
-#  notify:
-#    - reload_systemd
-#    - restart_wildfly
+  notify:
+    - reload_systemd
+    - restart_wildfly
