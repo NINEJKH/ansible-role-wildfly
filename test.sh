@@ -82,7 +82,8 @@ while [[ "${i}" -lt "60" ]]; do
     --silent \
     --fail \
     --show-error \
-    "${TARGET_HOST}:8080" > /dev/null; then
+    "${TARGET_HOST}:8080" 2> /dev/null; then
+    consolelog "waitfor ${TARGET_HOST}:8080 #${i}"
     sleep 5
   else
     break
