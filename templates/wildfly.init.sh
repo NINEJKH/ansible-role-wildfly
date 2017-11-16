@@ -43,6 +43,8 @@ if [ -f "$DEFAULT" ]; then
 	. "$DEFAULT"
 fi
 
+export RUN_CONF=/etc/wildfly/standalone.conf
+
 # Location of JDK
 if [ -n "$JAVA_HOME" ]; then
 	export JAVA_HOME

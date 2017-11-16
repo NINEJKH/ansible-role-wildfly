@@ -79,6 +79,7 @@ ansible-playbook \
 while [[ "${i}" -lt "60" ]]; do
   i="$((i + 1))"
   if ! curl \
+    --head \
     --silent \
     --fail \
     --show-error \
@@ -90,12 +91,6 @@ while [[ "${i}" -lt "60" ]]; do
     break
   fi
 done
-
-sudo netstat -lnp
-if ! sudo /etc/init.d/wildfly status; then
-  echo kek
-fi
-sudo tail /var/log/wildfly/server.log
 
 if [[ -z "${success}" ]]; then
   consolelog "wildfly unreachable" "error"

@@ -44,6 +44,7 @@
     - standalone.xml
     - standalone.conf
   become: yes
+  notify: restart_wildfly
 
 - name: copy over other files from the installation
   copy:
@@ -61,4 +62,9 @@
     - { name: mgmt-users.properties, mode: '0600' }
   become: yes
 
-# compare standalone.xml
+- name: copy-over index.html
+  copy:
+    src: index.html
+    dest: /opt/wildfly-{{ wildfly_version }}/welcome-content/index.html
+    mode: 0644
+  become: yes

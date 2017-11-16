@@ -6,6 +6,7 @@
     dest: /etc/default/wildfly
     mode: 0644
   become: yes
+  notify: restart_wildfly
 
 - name: add sysvinit service
   template:

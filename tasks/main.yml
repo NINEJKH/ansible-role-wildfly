@@ -1,5 +1,7 @@
 ---
 
+- import_tasks: dependencies.yml
+
 - import_tasks: install.yml
 
 - import_tasks: cli.yml
