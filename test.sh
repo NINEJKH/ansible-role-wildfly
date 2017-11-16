@@ -86,6 +86,16 @@ while [[ "${i}" -lt "60" ]]; do
     consolelog "waitfor ${TARGET_HOST}:8080 #${i}"
     sleep 5
   else
+    success="1"
     break
   fi
 done
+
+sudo netstat -lnp
+sudo /etc/init.d/wildfly status
+sudo tail /var/log/wildfly/server.log
+
+if [[ -z "${success}" ]]; then
+  consolelog "wildfly unreachable" "error"
+  exit 1
+fi
