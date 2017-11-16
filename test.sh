@@ -92,7 +92,9 @@ while [[ "${i}" -lt "60" ]]; do
 done
 
 sudo netstat -lnp
-sudo /etc/init.d/wildfly status
+if ! sudo /etc/init.d/wildfly status; then
+  echo kek
+fi
 sudo tail /var/log/wildfly/server.log
 
 if [[ -z "${success}" ]]; then
