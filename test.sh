@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-__DIR__="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readlink_bin="${READLINK_PATH:-readlink}"
+if ! "${readlink_bin}" -f test &> /dev/null; then
+  __DIR__="$(dirname "$("${readlink_bin}" "${0}")")"
+else
+  __DIR__="$(dirname "$("${readlink_bin}" -f "${0}")")"
+fi
 
 # required libs
 source "${__DIR__}/.bash/functions.shlib"

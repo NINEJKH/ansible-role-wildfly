@@ -1,6 +1,6 @@
 ---
 
-wildfly_version: 10.1.0.Final
+wildfly_version: 9.0.2.Final
 
 wildfly_modules:
   - name: com.mysql

@@ -20,4 +20,4 @@ galaxy_info:
     - development
 dependencies:
   - src: lifeofguenter.oracle-java
-    version: 0.3.4
+    version: 0.6.0

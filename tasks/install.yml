@@ -1,6 +1,6 @@
 ---
 
-- name: fetch WildFly
+- name: fetch wildfly
   unarchive:
     src: "{{ wildfly_download_url }}"
     dest: /opt
@@ -8,6 +8,13 @@
     creates: /opt/wildfly-{{ wildfly_version }}
   become: yes
   notify: restart_wildfly
+
+- name: symlink wildfly
+  file:
+    src: /opt/wildfly-{{ wildfly_version }}
+    dest: /opt/wildfly
+    state: link
+  become: yes
 
 - name: create wildfly group
   group:
