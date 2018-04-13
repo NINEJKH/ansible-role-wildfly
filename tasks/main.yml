@@ -18,7 +18,7 @@
   ignore_errors: yes
 
 - include_tasks: service-initv.yml
-  when: systemctl_version.rc != 0
+  when: systemctl_version is failed
 
 - include_tasks: service-systemd.yml
-  when: systemctl_version.rc == 0
+  when: systemctl_version.rc is succeeded
