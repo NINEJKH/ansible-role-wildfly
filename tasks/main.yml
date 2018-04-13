@@ -21,4 +21,4 @@
   when: systemctl_version is failed
 
 - include_tasks: service-systemd.yml
-  when: systemctl_version.rc is succeeded
+  when: systemctl_version is succeeded
